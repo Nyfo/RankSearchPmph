@@ -91,3 +91,96 @@ let rankSearchBatch [m][n] 't
 entry main [m][n]
   (ks: [m]i32) (shp: [m]i32) (II1: [n]i32) (A: [n]f32) =
   rankSearchBatch ks shp II1 A (<) (==) 0f32
+
+-- Months =====================
+
+type month = #Jan | #Feb | #Mar | #Apr | #May | #Jun
+           | #Jul | #Aug | #Sep | #Oct | #Nov | #Dec
+
+let month_ix (m: month) : i32 =
+  match m case #Jan -> 1  case #Feb -> 2  case #Mar -> 3  case #Apr -> 4
+          case #May -> 5  case #Jun -> 6  case #Jul -> 7  case #Aug -> 8
+          case #Sep -> 9  case #Oct -> 10 case #Nov -> 11 case #Dec -> 12
+
+let lt_month (a: month) (b: month) : bool = month_ix a < month_ix b
+
+-- Build ADT data inside; check result against the expected months.
+entry check_months : bool =
+  let ks  = [2i32, 1i32]
+  let shp = [5i32, 4i32]
+  let II1 = [0i32,0i32,0i32,0i32,0i32, 1i32,1i32,1i32,1i32]
+  let A   = [#Mar,#Jan,#Dec,#Feb,#Aug,  #Sep,#Apr,#Jan,#Jul]
+  let got     = rankSearchBatch ks shp II1 A lt_month (==) #Jan
+  let expect  = [#Feb, #Jan]
+  in got == expect
+
+-- ==
+-- entry: check_months
+-- input {}
+-- output {true}
+
+-- Card ranks only (Ace..King) =====================
+
+type rank_only = #Ace | #Two | #Three | #Four | #Five | #Six | #Seven
+               | #Eight | #Nine | #Ten | #Jack | #Queen | #King
+
+let rank_only_ix (r: rank_only) : i32 =
+  match r
+  case #Ace   -> 1  case #Two   -> 2  case #Three -> 3  case #Four -> 4
+  case #Five  -> 5  case #Six   -> 6  case #Seven -> 7  case #Eight-> 8
+  case #Nine  -> 9  case #Ten   -> 10 case #Jack  -> 11 case #Queen-> 12
+  case #King  -> 13
+
+let lt_rank_only (a: rank_only) (b: rank_only) : bool =
+  rank_only_ix a < rank_only_ix b
+
+-- Specialised entry (nice to have for manual runs).
+entry rankSearchBatchRanks [m][n]
+  (ks:[m]i32) (shp:[m]i32) (II1:[n]i32) (A:[n]rank_only) : [m]rank_only =
+  rankSearchBatch ks shp II1 A lt_rank_only (==) #Ace
+
+-- Build ADT data inside; check result against expected ranks.
+entry check_ranks : bool =
+  let ks  = [2i32, 3i32]
+  let shp = [5i32, 4i32]
+  let II1 = [0i32,0i32,0i32,0i32,0i32, 1i32,1i32,1i32,1i32]
+  let A   = [#Ace,#Five,#King,#Two,#Seven,  #Queen,#Queen,#Ace,#Four]
+  let got    = rankSearchBatchRanks ks shp II1 A
+  let expect = [#Two, #Queen]
+  in got == expect
+
+-- ==
+-- entry: check_ranks
+-- input {}
+-- output {true}
+
+-- Months as strings (calendar order) =====================
+
+-- Map month name -> calendar index (three-letter abbreviations)
+let month_rank (s: [3]u8) : i32 =
+  if s == "Jan" then 1 else if s == "Feb" then 2 else if s == "Mar" then 3 else
+  if s == "Apr" then 4 else if s == "May" then 5 else if s == "Jun" then 6 else
+  if s == "Jul" then 7 else if s == "Aug" then 8 else if s == "Sep" then 9 else
+  if s == "Oct" then 10 else if s == "Nov" then 11 else 12
+
+let lt_month_str (a: [3]u8) (b: [3]u8) : bool =
+  month_rank a < month_rank b
+
+-- exact equality for 3-byte strings
+let eq_bytes3 (a: [3]u8) (b: [3]u8) : bool =
+  all id (map2 (==) a b)
+
+-- Specialise to fixed-length month strings (3 bytes)
+entry rankSearchBatchMonthStr [m][n]
+  (ks:[m]i32) (shp:[m]i32) (II1:[n]i32) (A:[n][3]u8) : [m][3]u8 =
+  -- neutral must also be 3 chars
+  rankSearchBatch ks shp II1 A lt_month_str eq_bytes3 "Jan"
+
+-- Validation with months as strings (calendar order)
+-- ==
+-- entry: rankSearchBatchMonthStr
+-- input {[2i32, 1i32]
+--        [5i32, 4i32]
+--        [0i32,0i32,0i32,0i32,0i32, 1i32,1i32,1i32,1i32]
+--        ["Mar","Jan","Dec","Feb","Aug",  "Sep","Apr","Jan","Jul"]}
+-- output {["Feb","Jan"]}
