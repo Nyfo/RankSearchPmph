@@ -28,6 +28,34 @@
 -- input {[3i32, 2i32] [6i32, 4i32] [0i32,0i32,0i32,0i32,0i32,0i32, 1i32,1i32,1i32,1i32]
 --         [100.0f32, -100.0f32, 0.0f32, 50.0f32, -50.0f32, 1.0f32,   3.0f32, 3.0f32, 3.0f32, 3.0f32]}
 -- output {[0.0f32, 3.0f32]}
+-- compiled input @ 128_datasets/m128_s1000000.in
+-- output @ 128_datasets/m128_s1000000.out
+-- compiled input @ 128_datasets/m1280_s100000.in
+-- output @ 128_datasets/m1280_s100000.out
+-- compiled input @ 128_datasets/m12800_s10000.in
+-- output @ 128_datasets/m12800_s10000.out
+-- compiled input @ 128_datasets/m128000_s1000.in
+-- output @ 128_datasets/m128000_s1000.out
+-- compiled input @ 128_datasets/m1280000_s100.in
+-- output @ 128_datasets/m1280000_s100.out
+-- compiled input @ 128_datasets/m12800000_s10.in
+-- output @ 128_datasets/m12800000_s10.out
+
+-- compiled input @ more_datasets/m10_s10000000.in
+-- output @ more_datasets/m10_s10000000.out
+-- compiled input @ more_datasets/m100_s1000000.in
+-- output @ more_datasets/m100_s1000000.out
+-- compiled input @ more_datasets/m1000_s100000.in
+-- output @ more_datasets/m1000_s100000.out
+-- compiled input @ more_datasets/m10000_s10000.in
+-- output @ more_datasets/m10000_s10000.out
+-- compiled input @ more_datasets/m100000_s1000.in
+-- output @ more_datasets/m100000_s1000.out
+-- compiled input @ more_datasets/m1000000_s100.in
+-- output @ more_datasets/m1000000_s100.out
+-- compiled input @ more_datasets/m10000000_s10.in
+-- output @ more_datasets/m10000000_s10.out
+
 
 
 let rankSearchBatch [m][n]
@@ -79,18 +107,20 @@ let rankSearchBatch [m][n]
       map (\i -> if kinds[i] == 1 then pivots[i] else result[i]) (iota m)
 
     -- 5.
-    let n = length A
-    let piv_per_elem  = map (\j -> pivots[j]) II1
-    let kind_per_elem = map (\j -> kinds[j])  II1
+    --let n = length A
+    --let piv_per_elem  = map (\j -> pivots[j]) II1
+    --let kind_per_elem = map (\j -> kinds[j])  II1
 
     let keep_idx =
-    filter (!= -1)
-        (map (\i ->
-                let a = A[i]
-                let p = piv_per_elem[i]
-                let k = kind_per_elem[i]
-                in if (k == 0 && a < p) || (k == 2 && a > p) then i else -1)
-            (iota n))
+      filter (\i ->
+              let j = II1[i]
+              let a = A[i]
+              let p = pivots[j]
+              let k = kinds[j]
+              let go_left  = k == 0 && a < p
+              let go_right = k == 2 && a > p
+              in  go_left || go_right)
+            (indices A)
 
     let A'   = map (\i -> A[i]) keep_idx
     let II1' = map (\i -> II1[i]) keep_idx

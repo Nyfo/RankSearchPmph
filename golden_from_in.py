@@ -5,8 +5,8 @@ import futhark_data as fd
 
 # --- config ---
 SEED = 42
-m = 32
-s = 32_000_000
+m = 12800000
+s = 10
 A_min, A_max = -10000.0, 10000.0
 # -------------
 
@@ -31,8 +31,8 @@ for i in range(m):
 #   seg_sorted = np.sort(seg); k_elements[i] = seg_sorted[k0]
 
 # File names with sizes
-os.makedirs('futhark_datasets', exist_ok=True)
-base = os.path.join('futhark_datasets', f'm{m}_s{s}')
+os.makedirs('futhark_128_datasets', exist_ok=True)
+base = os.path.join('futhark_128_datasets', f'm{m}_s{s}')
 in_path  = base + '.in'
 out_path = base + '.out'
 
