@@ -22,6 +22,7 @@ void buildEvenOffsets(int* offsets, int N, int M) {
     }
 }
 
+
 int sortSegmentedCUB(int num_items, int num_segments)
 {
     // Define H as the range of input values
@@ -117,13 +118,12 @@ int sortSegmentedCUB(int num_items, int num_segments)
 }
 
 int main() {
-    sortSegmentedCUB(32000000, 32);
-    sortSegmentedCUB(32000000, 320);
-    sortSegmentedCUB(32000000, 3200);
-    sortSegmentedCUB(32000000, 32000);
-    sortSegmentedCUB(32000000, 320000);
-    sortSegmentedCUB(32000000, 3200000);
-    sortSegmentedCUB(32000000, 32000000);
+    sortSegmentedCUB(128000000, 128);
+    sortSegmentedCUB(128000000, 1280);
+    sortSegmentedCUB(128000000, 12800);
+    sortSegmentedCUB(128000000, 128000);
+    sortSegmentedCUB(128000000, 1280000);
+    sortSegmentedCUB(128000000, 12800000);
     cudaDeviceSynchronize(); 
     cudaCheckError();
     return 0;
