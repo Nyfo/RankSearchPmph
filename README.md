@@ -6,12 +6,20 @@ module load futhark
 module load numpy
 module load python/3.11.3
 ```
-## 2. Build and run CUDA and Futhark benchmarks
+## 2. Compile and run CUBs and Futhark benchmarks
+To compile both our CUDA and Futhark implementations
 ```
-make
+make compile_all
 ```
-
-## 3. Run the Python benchmark
+## 3. Run the CUBs benchmark
+```
+make run_cub
+```
+## 4. Run the Futhark tests and benchmarks
+```
+make run_futhark
+```
+## 5. Run the Python benchmark
 ```
 python sort.py
 ```
