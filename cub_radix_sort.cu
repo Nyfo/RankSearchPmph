@@ -93,21 +93,25 @@ int sortSegmentedCUB(int num_items, int num_segments)
     printf(" CUB Segmented Radix Sort - Throughput: %10.3f GB/s\n", throughput);
 
 
-    // //Validate result
-    // cudaMemcpy(h_keys, d_keys_out, num_items * sizeof(uint32_t), cudaMemcpyDeviceToHost); 
-    // bool sorted = true;
-    // for (int s = 0; s < num_segments; ++s) {
-    //     int start = h_offsets[s];
-    //     int end   = h_offsets[s + 1];
-    //     for (int i = start + 1; i < end; ++i) {
-    //         if (h_keys[i - 1] > h_keys[i]) {
-    //             sorted = false;
-    //             break;;
-    //         }
-    //     }
-    // }
-    // cleanup
-
+    //Validate result
+    cudaMemcpy(h_keys, d_keys_out, num_items * sizeof(uint32_t), cudaMemcpyDeviceToHost); 
+    bool sorted = true;
+    for (int s = 0; s < num_segments; ++s) {
+        int start = h_offsets[s];
+        int end   = h_offsets[s + 1];
+        for (int i = start + 1; i < end; ++i) {
+            if (h_keys[i - 1] > h_keys[i]) {
+                sorted = false;
+                break;;
+            }
+        }
+    }
+    if (sorted) {
+        printf(" CUB Segmented Radix Sort - Result = PASS\n");
+    } else {
+        printf(" CUB Segmented Radix Sort - Result = FAIL\n");
+    }
+    // Cleanup
     free(h_keys); 
     free(h_offsets);
     cudaFree(d_temp_storage);

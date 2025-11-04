@@ -28,27 +28,35 @@ def segmented_sort_numpy(keys_in: np.ndarray, offsets: np.ndarray) -> np.ndarray
 def sort_segmented_numpy(num_items: int, num_segments: int, runs: int = 5, seed: int = 1337) -> None:
     # Generate data
     H = 2 ** 24
-    h_keys_in = randomInitNat(num_items, H=H, seed=seed)
+    data = randomInitNat(num_items, H=H, seed=seed)
     # Build even offsets
-    h_offsets = buildEvenOffsets(num_items, num_segments)
+    offsets = buildEvenOffsets(num_items, num_segments)
 
     # Warm-up
-    _ = segmented_sort_numpy(h_keys_in, h_offsets)
+    _ = segmented_sort_numpy(data, offsets)
 
     # Run time 
     t0 = time.perf_counter()
     for _ in range(runs):
-        _ = segmented_sort_numpy(h_keys_in, h_offsets)
+        _ = segmented_sort_numpy(data, offsets)
     t1 = time.perf_counter()
 
     avg_us = (t1 - t0) * 1e6 / runs
 
     # Throughput in GB/s
-    total_bytes = h_keys_in.nbytes
+    total_bytes = data.nbytes
     throughput_gbps = total_bytes / (avg_us / 1e6) / 1e9
 
     print(f" NumPy Segmented Sort - Items: {num_items:10d} Segments: {num_segments:6d} Time: {avg_us:10.3f} µs Avg")
     print(f" NumPy Segmented Sort - Throughput: {throughput_gbps:10.3f} GB/s")
+
+    # Validate result
+    sorted = np.all(np.diff(data) >= 0)
+    if sorted:
+        print(" NumPy Segmented Sort - Result = PASS")
+    else:
+        print(" NumPy Segmented Sort - Result = FAIL")
+
 
 sort_segmented_numpy(128000000, 128)
 sort_segmented_numpy(128000000, 1280)
