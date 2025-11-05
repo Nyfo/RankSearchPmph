@@ -73,10 +73,11 @@ let rankSearchBatch [m][n]
 
     let shp' =
       map (\(kind, s, L, E) ->
-              if kind == 1 || kind == -1 then 0
-              else if kind == 0 then L
+              if kind == 0 then L
+              else if kind == -1 then 0
+              else if kind == 1 then 0
               else s - L - E)
-           (zip4 kinds shp less_counts equal_counts)
+          (zip4 kinds shp less_counts equal_counts)
 
     let ks' =
       map (\(k, kind, L, E) ->
