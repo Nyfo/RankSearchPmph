@@ -6,7 +6,7 @@ import futhark_data as fd
 # --- config ---
 SEED = 42
 A_min, A_max = -10000.0, 10000.0
-OUT_DIR = 'futhark_128_datasets'
+OUT_DIR = '128_datasets'
 MS_PAIRS = [
     (128,         1_000_000),
     (1_280,         100_000),

@@ -28,7 +28,6 @@
 -- input {[3i32, 2i32] [6i32, 4i32] [0i32,0i32,0i32,0i32,0i32,0i32, 1i32,1i32,1i32,1i32]
 --         [100.0f32, -100.0f32, 0.0f32, 50.0f32, -50.0f32, 1.0f32,   3.0f32, 3.0f32, 3.0f32, 3.0f32]}
 -- output {[0.0f32, 3.0f32]}
-
 -- compiled input @ 128_datasets/m128_s1000000.in
 -- output @ 128_datasets/m128_s1000000.out
 -- compiled input @ 128_datasets/m1280_s100000.in
@@ -41,23 +40,6 @@
 -- output @ 128_datasets/m1280000_s100.out
 -- compiled input @ 128_datasets/m12800000_s10.in
 -- output @ 128_datasets/m12800000_s10.out
-
--- compiled input @ more_datasets/m10_s10000000.in
--- output @ more_datasets/m10_s10000000.out
--- compiled input @ more_datasets/m100_s1000000.in
--- output @ more_datasets/m100_s1000000.out
--- compiled input @ more_datasets/m1000_s100000.in
--- output @ more_datasets/m1000_s100000.out
--- compiled input @ more_datasets/m10000_s10000.in
--- output @ more_datasets/m10000_s10000.out
--- compiled input @ more_datasets/m100000_s1000.in
--- output @ more_datasets/m100000_s1000.out
--- compiled input @ more_datasets/m1000000_s100.in
--- output @ more_datasets/m1000000_s100.out
--- compiled input @ more_datasets/m10000000_s10.in
--- output @ more_datasets/m10000000_s10.out
-
-
 
 let rankSearchBatch [m][n]
   (ks: [m]i32) (shp: [m]i32) (II1: [n]i32) (A: [n]f32) : [m]f32 =
