@@ -1,3 +1,5 @@
+default: all
+
 all: compile-all run
 
 # Compile all Futhark programs and the CUDA test program:
