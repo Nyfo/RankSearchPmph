@@ -28,6 +28,7 @@
 -- input {[3i32, 2i32] [6i32, 4i32] [0i32,0i32,0i32,0i32,0i32,0i32, 1i32,1i32,1i32,1i32]
 --         [100.0f32, -100.0f32, 0.0f32, 50.0f32, -50.0f32, 1.0f32,   3.0f32, 3.0f32, 3.0f32, 3.0f32]}
 -- output {[0.0f32, 3.0f32]}
+
 -- compiled input @ 128_datasets/m128_s1000000.in
 -- output @ 128_datasets/m128_s1000000.out
 -- compiled input @ 128_datasets/m1280_s100000.in
