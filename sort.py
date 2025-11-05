@@ -20,7 +20,7 @@ def buildEvenOffsets(N: int, M: int) -> np.ndarray:
 def segmented_sort_numpy(keys_in: np.ndarray, offsets: np.ndarray) -> np.ndarray:
     keys_out = np.empty_like(keys_in)
     # Loop over segments 
-    for s, e in zip(offsets[:-1], offsets[1:]):
+    for s, e in zip(offsets[:-1], offsets[1:]): 
         # np.sort returns a sorted copy for the slice; assign into output
         keys_out[s:e] = np.sort(keys_in[s:e])
     return keys_out

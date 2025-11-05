@@ -22,7 +22,6 @@ void buildEvenOffsets(int* offsets, int N, int M) {
     }
 }
 
-
 int sortSegmentedCUB(int num_items, int num_segments)
 {
     // Define H as the range of input values
@@ -47,7 +46,7 @@ int sortSegmentedCUB(int num_items, int num_segments)
     cudaMemcpy(d_keys_in, h_keys, num_items * sizeof(uint32_t), cudaMemcpyHostToDevice); 
     cudaMemcpy(d_offsets, h_offsets , (num_segments + 1) * sizeof(int), cudaMemcpyHostToDevice); 
 
-    // Computes a batched radix sort using CUB's DeviceSegmentedRadixSort
+    // Computes a batched segmented sort using CUB's SegmentedSort
     void * d_temp_storage = nullptr;
     size_t temp_storage_bytes = 0;
     cub::DeviceSegmentedSort::SortKeys(
@@ -85,12 +84,12 @@ int sortSegmentedCUB(int num_items, int num_segments)
     elapsed = (t_diff.tv_sec*1e6 + t_diff.tv_usec) / ((double)GPU_RUNS);
 
     // Run time
-    printf(" CUB Segmented Radix Sort - Items: %10d Segments: %6d Time: %10.3f µs Avg\n",
+    printf(" CUB Segmented Sort - Items: %10d Segments: %6d Time: %10.3f µs Avg\n",
           num_items, num_segments, elapsed);
 
     // Throughput
     double throughput = (num_items * sizeof(uint32_t)) / (elapsed * 1e3);
-    printf(" CUB Segmented Radix Sort - Throughput: %10.3f GB/s\n", throughput);
+    printf(" CUB Segmented Sort - Throughput: %10.3f GB/s\n", throughput);
 
 
     //Validate result
@@ -107,9 +106,9 @@ int sortSegmentedCUB(int num_items, int num_segments)
         }
     }
     if (sorted) {
-        printf(" CUB Segmented Radix Sort - Result = PASS\n");
+        printf(" CUB Segmented Sort - Result = PASS\n");
     } else {
-        printf(" CUB Segmented Radix Sort - Result = FAIL\n");
+        printf(" CUB Segmented Sort - Result = FAIL\n");
     }
     // Cleanup
     free(h_keys); 
