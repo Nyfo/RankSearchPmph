@@ -6,18 +6,20 @@ module load futhark
 module load numpy
 module load python/3.11.3
 ```
-## 2. Compile and run CUBs and Futhark benchmarks
-To compile both our CUDA and Futhark implementations
+## 2. Install futhark-data library with pip
 ```
-make compile_all
+pip install futhark-data
 ```
-## 3. Run the CUBs benchmark
+## 3. Generate the futhark benchmark datasets
 ```
-make run_cub
+python gen_futhark-data.py
 ```
-## 4. Run the Futhark tests and benchmarks
+## 4. Compile and run CUBs and Futhark benchmarks
+Extract our code .zip and move the extracted folder to the cluster.
+Locate the folder on the cluster with the terminal.
+To compile and run both our CUDA and Futhark implementations:
 ```
-make run_futhark
+make
 ```
 ## 5. Run the Python benchmark
 ```
