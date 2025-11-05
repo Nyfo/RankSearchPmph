@@ -17,7 +17,7 @@ pip install futhark-data
 python gen_futhark-data.py
 ```
 ## 4. Compile and run CUBs and Futhark benchmarks
-To compile and run both our CUDA and Futhark implementations:
+To compile and run both our CUDA CUB and Futhark implementations:
 ```
 make
 ```
