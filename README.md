@@ -1,4 +1,6 @@
 # Benchmarks on the Hendrix cluster
+Extract our code .zip and move the extracted folder to the cluster.
+Locate the folder on the cluster with the terminal.
 ## 1. Load required modules
 ```
 module load cuda
@@ -15,8 +17,6 @@ pip install futhark-data
 python gen_futhark-data.py
 ```
 ## 4. Compile and run CUBs and Futhark benchmarks
-Extract our code .zip and move the extracted folder to the cluster.
-Locate the folder on the cluster with the terminal.
 To compile and run both our CUDA and Futhark implementations:
 ```
 make
